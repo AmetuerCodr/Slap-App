@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, Button, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Button, TouchableWithoutFeedback, ImageBackground, Dimensions } from 'react-native';
 import { Accelerometer } from 'expo-sensors';
 import { Audio } from 'expo-av';
 import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import Page from '../Page';
+
 const soundFiles = [
     require('../assets/soundEffect1.mp3'),
     require('../assets/soundEffect2.mp3'),
     require('../assets/soundEffect3.mp3'),
     require('../assets/soundEffect4.mp3'),
-    require('../assets/soundEffect5.mp3'),]
+    require('../assets/soundEffect5.mp3'),
+];
+
+const { width, height } = Dimensions.get('window');
+const scaleFactor = Math.min(width, height) / 375; // Adjust the base scale factor as needed
 
 export default function ShakeDetector() {
     const [sound, setSound] = useState();
     const [mute, setMute] = useState(false);
     const [lastShakeTime, setLastShakeTime] = useState(0);
-    const [button, setButton] = useState('')
-    const [mTop, setmTop] = useState('20%')
-
+    const [button, setButton] = useState('');
+    const [mTop, setmTop] = useState('20%');
 
     const playSound = async (soundFile) => {
         if (!mute) {
@@ -99,7 +103,7 @@ export default function ShakeDetector() {
                 </TouchableWithoutFeedback>
                 <View style={styles.contentContainer}>
                     <Page />
-                    <Text style={styles.text}>Shake your device mimicking a slapping action (But don't actually slap someone!)</Text>
+                    <Text style={[styles.text, { fontSize: 15 * scaleFactor }]}>Shake your device mimicking a slapping action (But don't actually slap someone!)</Text>
 
                 </View>
             </ScrollView>
@@ -111,17 +115,13 @@ export default function ShakeDetector() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        position: 'relative'
     },
     scrollView: {
         flex: 1,
     },
     contentContainer: {
-        flexGrow: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 60,
-        paddingVertical: 16,
     },
     mute: {
         position: 'absolute',
@@ -130,18 +130,8 @@ const styles = StyleSheet.create({
         zIndex: 9000,
     },
     text: {
-        fontSize: 20,
         textAlign: 'center',
         fontWeight: 'bold',
         maxWidth: 440,
-        marginBottom: 16,
     },
-    body: {
-        textAlign: 'justify',
-        fontWeight: 'bold',
-        color: 'red'
-    },
-
 });
-
-
