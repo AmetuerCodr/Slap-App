@@ -1,11 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet, Button } from 'react-native'
+import { View, Text, StyleSheet, Button, ScrollView } from 'react-native'
 
 export default function Terms() {
     // let language = route.params.language;
     // let greetings = language
     return (
-        <View style={{ ...styles.termsContainer, display: button }}>
+        <View style={{ ...styles.termsContainer }}>
             <ScrollView >
                 <Text style={styles.intro}>
                     Welcome to The Terms and Conditions of Using Slap (App)
@@ -37,12 +37,10 @@ export default function Terms() {
 
 const styles = StyleSheet.create({
     termsContainer: {
-        position: 'absolute',
-        bottom: 0,
-        left: 10,
-        right: 10,
-        padding: 20,
-        marginTop: '0.0001%',
+        paddingTop: 80,
+        paddingLeft: 50,
+        paddingRight: 50,
+        margin: 5
     },
     intro: {
         fontWeight: '900',

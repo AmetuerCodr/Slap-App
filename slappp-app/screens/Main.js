@@ -4,6 +4,7 @@ import { Accelerometer } from 'expo-sensors';
 import { Audio } from 'expo-av';
 import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import Page from '../Page';
+import Nav from './Nav';
 
 const soundFiles = [
     require('../assets/soundEffect1.mp3'),
@@ -17,6 +18,8 @@ const { width, height } = Dimensions.get('window');
 const scaleFactor = Math.min(width, height) / 375; // Adjust the base scale factor as needed
 
 export default function ShakeDetector() {
+    const [home, setHome] = useState(false);
+    const [terms, setTerms] = useState(false);
     const [sound, setSound] = useState();
     const [mute, setMute] = useState(false);
     const [lastShakeTime, setLastShakeTime] = useState(0);
@@ -90,9 +93,8 @@ export default function ShakeDetector() {
 
     return (
         <View style={styles.container}>
-
-            <ScrollView style={styles.scrollView}>
-                <TouchableWithoutFeedback onPress={toggleMute}>
+            <View style={styles.scrollView}>
+                {/* <TouchableWithoutFeedback onPress={toggleMute}>
                     <View style={styles.mute}>
                         {mute ? (
                             <FontAwesome5 name="volume-mute" size={24} color="black" />
@@ -100,14 +102,18 @@ export default function ShakeDetector() {
                             <FontAwesome name="volume-up" size={24} color="black" />
                         )}
                     </View>
-                </TouchableWithoutFeedback>
+                </TouchableWithoutFeedback> */}
                 <View style={styles.contentContainer}>
                     <Page />
                     <Text style={[styles.text, { fontSize: 15 * scaleFactor }]}>Shake your device mimicking a slapping action (But don't actually slap someone!)</Text>
 
                 </View>
-            </ScrollView>
-
+            </View>
+            <Nav homefunc={() => {
+                setHome(!home)
+            }} termsfunc={() => {
+                setTerms(!terms)
+            }} />
         </View >
     );
 }
@@ -115,9 +121,12 @@ export default function ShakeDetector() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        // backgroundColor: 'orange',
+        // paddingBottom: '80%',
+
     },
     scrollView: {
-        flex: 1,
+        // flex: 1,
     },
     contentContainer: {
         justifyContent: 'center',
@@ -133,5 +142,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: 'bold',
         maxWidth: 440,
+        paddingLeft: 10,
+        paddingRight: 10,
+
     },
 });
