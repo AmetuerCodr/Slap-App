@@ -1,80 +1,69 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, ScrollView, Dimensions, TouchableWithoutFeedback, Image } from 'react-native';
-import Nav from './screens/Nav';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, ScrollView, Dimensions, TouchableWithoutFeedback, ImageBackground, Linking } from 'react-native';
 import Main from './screens/Main';
-import { Entypo } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
 import Home from './screens/Home';
 import Terms from './screens/Terms';
+import Accept from './screens/Accept';
+import * as SecureStore from 'expo-secure-store'; // Or use AsyncStorage
+import * as Font from 'expo-font';
+// Get the height of the window
+const windowHeight = Dimensions.get('window').height;
 
+// ... your other imports
+
+
+
+// ... (Rest of your existing App component code)
 
 export default function App() {
     const [home, setHome] = useState(true);
+    const [main, setMain] = useState(true)
     const [terms, setTerms] = useState(false);
+    let [hasAgreed, setHasAgreed] = useState(false);
 
-    const toggleHome = () => {
-        setHome(!home);
+    const AGREEMENT_KEY = 'userHasAgreed';
+
+    // ... (Rest of your existing App component code)
+
+
+    const saveAgreement = async () => {
+        await SecureStore.setItemAsync(AGREEMENT_KEY, 'true');
+        setHasAgreed(true); // Update component state for immediate rendering change
     };
 
-    const toggleTerms = () => {
-        setTerms(!terms);
-        setHome(!home)
-        console.log('terms has been toggled');
+    const checkAgreement = async () => {
+        const agreed = await SecureStore.getItemAsync(AGREEMENT_KEY);
+        setHasAgreed(agreed === 'true');
     };
+
+
+    async function deleteAccept() {
+        await SecureStore.deleteItemAsync(AGREEMENT_KEY);
+    }
+    deleteAccept()
+    useEffect(() => {
+        checkAgreement(); // Check agreement on app load
+    }, []);
+
+    const openWebsite = () => {
+        const url = 'https://www.privacypolicies.com/live/f1217916-be2c-4e4c-a1f2-bd4f66df2f4a'; // Replace 'https://example.com' with your desired URL
+        Linking.openURL(url);
+    };
+
+
     return (
-        <ScrollView>
-            <View style={styles.container}>
-                <View style={styles.nav}>
-                    <View style={styles.border}></View>
-                    <TouchableWithoutFeedback onPress={toggleHome}>
-                        <View style={styles.iconContainer}>
-                            <Entypo name="home" color="black" style={styles.icon} />
-                        </View>
-                    </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback onPress={toggleTerms}>
-                        <View style={styles.iconContainer}>
-                            <FontAwesome5 name="file-contract" color="black" style={styles.icon} />
-                        </View>
-                    </TouchableWithoutFeedback>
-                </View>
-            </View>
-            {home && <Main />}
-            {terms && <Terms />}
-            {/* <Nav /> */}
-            {/* You can add other components conditionally here */}
+        <ScrollView style={styles.container}>
+            {hasAgreed && <Main />}
+            {!hasAgreed && <Accept handleAgree={saveAgreement} style={{ height: windowHeight, alignItems: 'center', justifyContent: 'center', padding: '10%', borderRadius: 10 }} textStyle={{ zIndex: 99999, padding: 5, maxWidth: '75%' }} />}
         </ScrollView>
     );
+
+
 }
+
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    nav: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        position: 'relative',
-        bottom: 70, // Adjust according to your requirements
-    },
-    border: {
-        position: 'absolute',
-        borderRadius: 30,
-        bottom: 0,
-        right: 0,
-        width: '100%',
-        height: '600%',
-        backgroundColor: 'cyan',
-        opacity: 0.4
-    },
-    iconContainer: {
-        zIndex: 1, // Adjust z-index as needed
-    },
-    icon: {
-        fontSize: 50,
-    },
-    image: {
-        width: 80,
-        height: 80,
-    },
-});
+    }
+})

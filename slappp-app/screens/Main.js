@@ -4,7 +4,7 @@ import { Accelerometer } from 'expo-sensors';
 import { Audio } from 'expo-av';
 import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import Page from '../Page';
-import Nav from './Nav';
+// import Nav from './Nav';
 
 const soundFiles = [
     require('../assets/soundEffect1.mp3'),
@@ -35,6 +35,7 @@ export default function ShakeDetector() {
             await sound.playAsync();
         }
     };
+
 
     useEffect(() => {
         return sound ? async () => {
@@ -91,29 +92,21 @@ export default function ShakeDetector() {
         }
     };
 
+    const toggleHome = () => {
+        setHome(!home)
+        setMain(!main)
+        console.log('home has been selected')
+    }
+
     return (
-        <View style={styles.container}>
-            <View style={styles.scrollView}>
-                {/* <TouchableWithoutFeedback onPress={toggleMute}>
-                    <View style={styles.mute}>
-                        {mute ? (
-                            <FontAwesome5 name="volume-mute" size={24} color="black" />
-                        ) : (
-                            <FontAwesome name="volume-up" size={24} color="black" />
-                        )}
-                    </View>
-                </TouchableWithoutFeedback> */}
+        // <View style={{ ...styles.container, height: containerHeight }}>
+        <View>
+            <View>
                 <View style={styles.contentContainer}>
                     <Page />
                     <Text style={[styles.text, { fontSize: 15 * scaleFactor }]}>Shake your device mimicking a slapping action (But don't actually slap someone!)</Text>
-
                 </View>
             </View>
-            <Nav homefunc={() => {
-                setHome(!home)
-            }} termsfunc={() => {
-                setTerms(!terms)
-            }} />
         </View >
     );
 }
@@ -121,8 +114,7 @@ export default function ShakeDetector() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: 'orange',
-        // paddingBottom: '80%',
+        backgroundColor: 'orange',
 
     },
     scrollView: {

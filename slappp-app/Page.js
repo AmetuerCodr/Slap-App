@@ -10,7 +10,6 @@ export default function Page() {
         </View>
     )
 }
-// { fontSize:  }
 const styles = StyleSheet.create({
     logo: {
         width: 160 * scaleFactor,

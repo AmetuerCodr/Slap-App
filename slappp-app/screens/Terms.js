@@ -1,12 +1,10 @@
 import React from "react";
-import { View, Text, StyleSheet, Button, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 
-export default function Terms() {
-    // let language = route.params.language;
-    // let greetings = language
+export default function Terms({ terms }) {
     return (
-        <View style={{ ...styles.termsContainer }}>
-            <ScrollView >
+        <ScrollView contentContainerStyle={styles.container}>
+            <View style={styles.termsContainer}>
                 <Text style={styles.intro}>
                     Welcome to The Terms and Conditions of Using Slap (App)
                     by using this Software you automatically agree
@@ -30,20 +28,25 @@ export default function Terms() {
                     are Not responsible for any unwanted physical contact
                     Intentional or unintentional
                 </Text>
-            </ScrollView>
-        </View>
-    )
+            </View>
+        </ScrollView>
+    );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flexGrow: 1,
+        // paddingTop: '60%'
+    },
     termsContainer: {
-        paddingTop: 80,
-        paddingLeft: 50,
-        paddingRight: 50,
-        margin: 5
+        margin: 10,
+
     },
     intro: {
         fontWeight: '900',
         marginBottom: 10,
     },
-})
+    body: {
+        marginBottom: 20,
+    },
+});
